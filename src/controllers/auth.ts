@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { validatePassword } from '../utils/password';
 import { createTokenFromUser } from '../utils/tokens';
-import { AuthenticationError, LoginError, RegistrationError } from '../errors';
 import { createUser, getUserByEmail } from '../database/queries/user';
 
 export const loginController = async (
@@ -13,13 +12,19 @@ export const loginController = async (
     const { email, password } = req.body;
 
     if (!email || !password) {
-      throw new LoginError('Please provide valid credentials.');
+      throw new Error('Please provide valid credentials.');
     }
 
     const user = await getUserByEmail(email);
 
-    if (!user || !(await validatePassword(password, user?.password!))) {
-      throw new AuthenticationError('Invalid credentials.');
+    if (!user?.password) {
+      throw new Error('Invalid user.');
+    }
+
+    const isValid = await validatePassword(password, user.password);
+
+    if (!user || !isValid) {
+      throw new Error('Invalid credentials.');
     }
 
     const { password: _, ...userWithoutPassword } = user;
@@ -32,17 +37,7 @@ export const loginController = async (
       token,
     });
   } catch (err) {
-    if (err instanceof AuthenticationError) {
-      res.status(401).json({
-        error: 'Unauthorized',
-        message: err.message,
-      });
-    } else if (err instanceof LoginError) {
-      res.status(400).json({
-        status: 'error',
-        message: err.message,
-      });
-    } else {
+    if (err instanceof Error) {
       next(err);
     }
   }
@@ -57,20 +52,18 @@ export const registerController = async (
     const { email, username, password } = req.body;
 
     if (!email || !username || !password) {
-      throw new RegistrationError(
-        'Please provide valid email, username, and password.',
-      );
+      throw new Error('Please provide valid email, username, and password.');
     }
 
     const emailCheck = await getUserByEmail(email);
     if (emailCheck) {
-      throw new RegistrationError('User already exists.');
+      throw new Error('User already exists.');
     }
 
     const user = await createUser(email, username, password);
 
     if (!user) {
-      throw new RegistrationError('Error creating user.');
+      throw new Error('Error creating user.');
     }
 
     const { password: _, ...userWithoutPassword } = user;
@@ -83,17 +76,7 @@ export const registerController = async (
       token,
     });
   } catch (err) {
-    if (err instanceof AuthenticationError) {
-      res.status(401).json({
-        error: 'Unauthorized',
-        message: err.message,
-      });
-    } else if (err instanceof RegistrationError) {
-      res.status(400).json({
-        status: 'error',
-        message: err.message,
-      });
-    } else {
+    if (err instanceof Error) {
       next(err);
     }
   }
@@ -108,7 +91,7 @@ export const meController = async (
     const user = res.locals.user;
 
     if (!user) {
-      throw new AuthenticationError('Unauthorized');
+      throw new Error('Unauthorized');
     }
 
     res.status(200).json({
@@ -116,12 +99,7 @@ export const meController = async (
       user,
     });
   } catch (err) {
-    if (err instanceof AuthenticationError) {
-      res.status(401).json({
-        error: 'Unauthorized',
-        message: err.message,
-      });
-    } else {
+    if (err instanceof Error) {
       next(err);
     }
   }

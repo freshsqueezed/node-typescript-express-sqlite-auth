@@ -16,6 +16,20 @@ describe('Auth Routes', () => {
   });
 
   describe('POST /auth/login', () => {
+    it('should throw an error if credentials invalid', async () => {
+      try {
+        await request(app).post('/auth/login').send({
+          email: 'gordo@email.com',
+          password: 'invalid',
+        });
+      } catch (err) {
+        if (err instanceof Error) {
+          expect(err).toBeTruthy();
+          expect(err.message).toBe('Invalid credentials.');
+        }
+      }
+    });
+
     it('should return a user with a token', async () => {
       const response = await request(app).post('/auth/login').send({
         email: 'gordo@email.com',
@@ -42,6 +56,19 @@ describe('Auth Routes', () => {
   });
 
   describe('POST /auth/register', () => {
+    it('should throw an error if missing properties', async () => {
+      try {
+        await request(app).post('/auth/register').send({
+          email: 'gordo@email.com',
+        });
+      } catch (err) {
+        if (err instanceof Error) {
+          expect(err).toBeTruthy();
+          expect(err.message).toBe('Invalid credentials.');
+        }
+      }
+    });
+
     it('should return a user with a token', async () => {
       const response = await request(app).post('/auth/register').send({
         email: 'new@email.com',

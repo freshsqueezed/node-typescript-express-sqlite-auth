@@ -4,7 +4,11 @@ export const validatePassword = async (
   userPassword: string,
   dbPassword: string,
 ): Promise<boolean> => {
-  return await compare(userPassword, dbPassword);
+  try {
+    return await compare(userPassword, dbPassword);
+  } catch (err) {
+    throw new Error('Password validation failed.');
+  }
 };
 
 export const hashPassword = async (password: string): Promise<string> => {
@@ -12,7 +16,7 @@ export const hashPassword = async (password: string): Promise<string> => {
     const salt = await genSalt(10);
     const hashed = await hash(password, salt);
     return hashed;
-  } catch (error) {
-    throw new Error('Password hashing failed');
+  } catch (err) {
+    throw new Error('Password hashing failed.');
   }
 };
