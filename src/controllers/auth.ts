@@ -10,19 +10,16 @@ export const loginController = async (
 ) => {
   try {
     const { email, password } = req.body;
-
     if (!email || !password) {
       throw new Error('Please provide valid credentials.');
     }
 
     const user = await getUserByEmail(email);
-
     if (!user?.password) {
       throw new Error('Invalid user.');
     }
 
     const isValid = await validatePassword(password, user.password);
-
     if (!user || !isValid) {
       throw new Error('Invalid credentials.');
     }
@@ -50,7 +47,6 @@ export const registerController = async (
 ) => {
   try {
     const { email, username, password } = req.body;
-
     if (!email || !username || !password) {
       throw new Error('Please provide valid email, username, and password.');
     }
@@ -61,7 +57,6 @@ export const registerController = async (
     }
 
     const user = await createUser(email, username, password);
-
     if (!user) {
       throw new Error('Error creating user.');
     }
@@ -89,7 +84,6 @@ export const meController = async (
 ) => {
   try {
     const user = res.locals.user;
-
     if (!user) {
       throw new Error('Unauthorized');
     }
