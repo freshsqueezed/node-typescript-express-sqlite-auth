@@ -8,7 +8,7 @@ const app = express();
 
 // middleware
 app.use(json());
-app.use(cors<CorsRequest>());
+app.use(cors());
 
 // custom middleware
 app.use(authMiddleware);

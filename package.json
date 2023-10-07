@@ -1,13 +1,13 @@
 {
   "name": "node_typescript_express_pg_auth",
   "version": "1.0.0",
-  "description": "A simple RESTful API using Node, Express, TypeScript, Express, and Postgres with JWT auth.",
+  "description": "A simple RESTful API using Node, Express, TypeScript and Postgres with JWT auth.",
   "main": "./dist/src/index.js",
   "scripts": {
     "test": "jest -i",
     "build": "tsc",
     "dev": "nodemon",
-    "start": "node ./src/index.js"
+    "start": "node ./dist/src/index.js"
   },
   "keywords": [],
   "author": "Matt Gordon <matt@lemonade.tech>",
