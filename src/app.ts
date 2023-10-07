@@ -1,5 +1,5 @@
 import express, { json } from 'express';
-import cors, { CorsRequest } from 'cors';
+import cors from 'cors';
 import { authMiddleware } from './middleware/auth';
 import mainRoutes from './routes/main';
 import authRoutes from './routes/auth';
