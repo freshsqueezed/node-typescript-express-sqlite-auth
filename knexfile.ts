@@ -26,6 +26,7 @@ const connection: ConnectionConfig = {
       database: 'node_typescript_express_pg_auth',
     },
   }),
+
   development: config({
     connection: {
       database: 'node_typescript_express_pg_auth_test',

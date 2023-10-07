@@ -7,8 +7,8 @@
     "strict": true,
     "skipLibCheck": true,
     "outDir": "dist",
-    "rootDirs": ["src"]
+    "rootDirs": ["src", "__tests__"]
   },
-  "include": ["src", "__tests__"],
+  "include": ["src"],
   "exclude": ["__tests__"]
 }

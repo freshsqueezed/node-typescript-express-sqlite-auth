@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import app from './app';
-import { HOST, NODE_ENV, PORT } from './config';
+import { HOST, PORT, isProd } from './config';
 
 const server = createServer(app);
 
@@ -10,10 +10,6 @@ server.listen(
     port: PORT,
   },
   () => {
-    console.log(
-      `Listening on http${
-        NODE_ENV === 'production' ? 's' : ''
-      }://${HOST}:${PORT}...`,
-    );
+    console.log(`Listening on http${isProd ? 's' : ''}://${HOST}:${PORT}...`);
   },
 );
