@@ -83,14 +83,9 @@ export const meController = async (
   next: NextFunction,
 ) => {
   try {
-    const user = res.locals.user;
-    if (!user) {
-      throw new Error('Unauthorized');
-    }
-
     res.status(200).json({
       status: 'success',
-      user,
+      user: res.locals.user ?? null,
     });
   } catch (err) {
     if (err instanceof Error) {
