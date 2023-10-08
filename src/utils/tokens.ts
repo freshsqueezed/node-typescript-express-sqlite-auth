@@ -3,7 +3,7 @@ import { User } from '../types';
 import { TOKEN_SECRET } from '../config';
 
 export const createTokenFromUser = async (
-  user: User,
+  user: Partial<User>,
   expiresIn: string,
 ): Promise<string> => {
   return sign(
