@@ -71,9 +71,20 @@ export async function updateUser(
     })
     .returning(['id', 'username', 'email', 'created_at', 'updated_at']);
 
-  if (!user) {
+  if (!updateUser) {
     throw new Error('Error creating user.');
   }
 
   return updatedUser;
+}
+
+export async function deleteUser(id: string): Promise<User[]> {
+  const user = await db<User>('users')
+    .del()
+    .where({
+      id: parseInt(id),
+    })
+    .returning('*');
+
+  return user;
 }

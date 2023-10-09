@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  deleteUserController,
   getUserByIdController,
   getUsersController,
   newUserController,
@@ -12,5 +13,6 @@ router.get('/users', getUsersController);
 router.get('/users/:id', getUserByIdController);
 router.post('/users', newUserController);
 router.put('/users/:id', updateUserController);
+router.delete('/users/:id', deleteUserController);
 
 export default router;

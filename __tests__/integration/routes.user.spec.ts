@@ -92,4 +92,18 @@ describe('User routes', () => {
       });
     });
   });
+
+  describe('DELETE /users/:id', () => {
+    it('deletes a user by id', async () => {
+      const response = await request(app).del('/users/1');
+
+      expect(response.status).toBe(200);
+      expect(response.type).toBe('application/json');
+      expect(response.body).toHaveProperty('status');
+      expect(response.body).toHaveProperty('data');
+      expect(response.body.data).toStrictEqual(
+        'User with id 1 successfully deleted.',
+      );
+    });
+  });
 });

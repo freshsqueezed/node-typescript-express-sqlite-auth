@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import {
   createUser,
+  deleteUser,
   getAllUsers,
   getUserById,
   updateUser,
@@ -80,6 +81,25 @@ export const updateUserController = async (
     res.status(200).send({
       status: 'success',
       data: user,
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      next(err);
+    }
+  }
+};
+
+export const deleteUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const user = await deleteUser(req.params.id);
+
+    res.status(200).send({
+      status: 'success',
+      data: `User with id ${1} successfully deleted.`,
     });
   } catch (err) {
     if (err instanceof Error) {
