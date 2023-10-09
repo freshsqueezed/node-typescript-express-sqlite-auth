@@ -18,6 +18,4 @@ export async function seed(knex: Knex): Promise<void> {
       password: hashed,
     },
   ]);
-
-  await knex.raw(`SELECT setval('users_id_seq', (SELECT MAX(id) FROM users))`);
 }

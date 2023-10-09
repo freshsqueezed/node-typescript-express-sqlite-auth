@@ -6,30 +6,26 @@ export interface ConnectionConfig {
 }
 
 const defaultOptions: Knex.Config = {
-  client: 'postgresql',
+  client: 'sqlite3',
   migrations: {
     directory: join(__dirname, 'src', 'database', 'migrations'),
-    tableName: 'knex_migrations',
   },
   seeds: {
     directory: join(__dirname, 'src', 'database', 'seeds'),
   },
-  pool: {
-    min: 2,
-    max: 10,
-  },
+  useNullAsDefault: true,
 };
 
 const connection: ConnectionConfig = {
-  test: config({
+  development: config({
     connection: {
-      database: 'node_typescript_express_pg_auth',
+      filename: 'node_typescript_express_pg_auth.db',
     },
   }),
 
-  development: config({
+  test: config({
     connection: {
-      database: 'node_typescript_express_pg_auth_test',
+      filename: ':memory:',
     },
   }),
 };
