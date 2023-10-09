@@ -50,4 +50,26 @@ describe('User routes', () => {
       });
     });
   });
+
+  describe('POST /users', () => {
+    it('creates a new user', async () => {
+      const response = await request(app).post('/users').send({
+        username: 'newUser',
+        email: 'new@email.com',
+        password: 'password123',
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.type).toBe('application/json');
+      expect(response.body).toHaveProperty('status');
+      expect(response.body).toHaveProperty('data');
+      expect(response.body.data).toStrictEqual({
+        id: 2,
+        username: 'newUser',
+        email: 'new@email.com',
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      });
+    });
+  });
 });

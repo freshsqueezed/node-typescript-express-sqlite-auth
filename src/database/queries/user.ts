@@ -51,10 +51,10 @@ export async function createUser(
       username,
       password: await hashPassword(password),
     })
-    .returning('*');
+    .returning(['id', 'username', 'email', 'created_at', 'updated_at']);
 
   if (!user) {
-    throw new Error('User does not exist.');
+    throw new Error('Error creating user.');
   }
 
   return user;
