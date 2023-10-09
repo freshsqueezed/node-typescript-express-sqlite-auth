@@ -19,7 +19,7 @@ const defaultOptions: Knex.Config = {
 const connection: ConnectionConfig = {
   development: config({
     connection: {
-      filename: 'node_typescript_express_pg_auth.db',
+      filename: './auth.db',
     },
   }),
 

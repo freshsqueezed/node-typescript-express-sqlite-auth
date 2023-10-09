@@ -1,7 +1,7 @@
 {
-  "name": "node_typescript_express_pg_auth",
+  "name": "node_typescript_express_sqlite",
   "version": "1.0.0",
-  "description": "A simple RESTful API using Node, Express, TypeScript and Postgres with JWT auth.",
+  "description": "A simple REST API using Node, Express, TypeScript and SQLite with JWT auth.",
   "main": "./dist/src/index.js",
   "scripts": {
     "test": "jest -i",
@@ -10,7 +10,7 @@
     "start": "node ./dist/src/index.js"
   },
   "keywords": [],
-  "author": "Matt Gordon <matt@lemonade.tech>",
+  "author": "Matt Gordon <hello@lemonade.tech>",
   "license": "ISC",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.4",
