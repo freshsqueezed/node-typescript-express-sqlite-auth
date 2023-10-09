@@ -72,4 +72,24 @@ describe('User routes', () => {
       });
     });
   });
+
+  describe('PUT /users/:id', () => {
+    it('updates a user by id', async () => {
+      const response = await request(app).put('/users/1').send({
+        username: 'updatedUser',
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.type).toBe('application/json');
+      expect(response.body).toHaveProperty('status');
+      expect(response.body).toHaveProperty('data');
+      expect(response.body.data).toStrictEqual({
+        id: 1,
+        username: 'updatedUser',
+        email: 'gordo@email.com',
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      });
+    });
+  });
 });

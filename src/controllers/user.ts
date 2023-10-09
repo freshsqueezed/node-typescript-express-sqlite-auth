@@ -1,5 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import { createUser, getAllUsers, getUserById } from '../database/queries/user';
+import {
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+} from '../database/queries/user';
 
 export const getUsersController = async (
   _: Request,
@@ -52,6 +57,25 @@ export const newUserController = async (
       req.body.username,
       req.body.password,
     );
+
+    res.status(200).send({
+      status: 'success',
+      data: user,
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      next(err);
+    }
+  }
+};
+
+export const updateUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const user = await updateUser(req.params.id, req.body);
 
     res.status(200).send({
       status: 'success',

@@ -44,7 +44,7 @@ export async function createUser(
   email: string,
   username: string,
   password: string,
-): Promise<User | undefined> {
+): Promise<User> {
   const [user] = await db<User>('users')
     .insert({
       email,
@@ -58,4 +58,22 @@ export async function createUser(
   }
 
   return user;
+}
+
+export async function updateUser(
+  id: string,
+  user: Partial<User>,
+): Promise<User> {
+  const [updatedUser] = await db<User>('users')
+    .where({ id: parseInt(id) })
+    .update({
+      ...user,
+    })
+    .returning(['id', 'username', 'email', 'created_at', 'updated_at']);
+
+  if (!user) {
+    throw new Error('Error creating user.');
+  }
+
+  return updatedUser;
 }
