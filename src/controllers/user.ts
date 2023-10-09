@@ -9,10 +9,6 @@ export const getUsersController = async (
   try {
     const users = await getAllUsers();
 
-    if (!users.length) {
-      throw new Error('No users exist.');
-    }
-
     res.status(200).send({
       status: 'success',
       data: users,
@@ -30,13 +26,9 @@ export const getUserByIdController = async (
   next: NextFunction,
 ) => {
   try {
-    const user = await getUserById(req.params.id);
-
-    if (!user) {
-      throw new Error('user does not exist.');
-    }
-
-    const { password: _, ...userWithoutPassword } = user;
+    const { password: _, ...userWithoutPassword } = await getUserById(
+      req.params.id,
+    );
 
     res.status(200).send({
       status: 'success',

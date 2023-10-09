@@ -3,25 +3,41 @@ import { User } from '../../types';
 import { hashPassword } from '../../utils/password';
 
 export const getAllUsers = async (): Promise<User[]> => {
-  return await db<User>('users').select(
+  const users = await db<User>('users').select(
     'id',
     'username',
     'email',
     'created_at',
     'updated_at',
   );
+
+  if (!users.length) {
+    throw new Error('No users exist.');
+  }
+
+  return users;
 };
 
-export const getUserByEmail = async (
-  email: string,
-): Promise<User | undefined> => {
-  return await db<User>('users').first().where({ email });
+export const getUserByEmail = async (email: string): Promise<User> => {
+  const user = await db<User>('users').first().where({ email });
+
+  if (!user) {
+    throw new Error('User does not exist.');
+  }
+
+  return user;
 };
 
-export const getUserById = async (id: string): Promise<User | undefined> => {
-  return await db<User>('users')
+export const getUserById = async (id: string): Promise<User> => {
+  const user = await db<User>('users')
     .first()
     .where({ id: parseInt(id) });
+
+  if (!user) {
+    throw new Error('User does not exist.');
+  }
+
+  return user;
 };
 
 export async function createUser(
@@ -36,6 +52,10 @@ export async function createUser(
       password: await hashPassword(password),
     })
     .returning('*');
+
+  if (!user) {
+    throw new Error('User does not exist.');
+  }
 
   return user;
 }
