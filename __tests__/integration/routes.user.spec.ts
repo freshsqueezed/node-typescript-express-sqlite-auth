@@ -32,4 +32,22 @@ describe('User routes', () => {
       });
     });
   });
+
+  describe('GET /users/:id', () => {
+    it('returns a single user by id', async () => {
+      const response = await request(app).get('/users/1');
+
+      expect(response.status).toBe(200);
+      expect(response.type).toBe('application/json');
+      expect(response.body).toHaveProperty('status');
+      expect(response.body).toHaveProperty('data');
+      expect(response.body.data).toStrictEqual({
+        id: 1,
+        username: 'mateogordo',
+        email: 'gordo@email.com',
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      });
+    });
+  });
 });

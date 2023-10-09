@@ -15,8 +15,8 @@ app.use(cors());
 app.use(authMiddleware);
 
 // routes
-app.use(mainRoutes);
 app.use(authRoutes);
+app.use(mainRoutes);
 app.use(userRoutes);
 
 export default app;

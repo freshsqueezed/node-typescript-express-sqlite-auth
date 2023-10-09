@@ -1,31 +1,9 @@
-import { NextFunction, Request, Response, Router } from 'express';
-import { User } from '../types';
-import db from '../database/db';
+import { Router } from 'express';
+import { getUserByIdController, getUsersController } from '../controllers/user';
 
 const router = Router();
 
-router.get(
-  '/users',
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const users = await db<User>('users').select(
-        'id',
-        'username',
-        'email',
-        'created_at',
-        'updated_at',
-      );
-
-      res.status(200).send({
-        status: 'success',
-        data: users,
-      });
-    } catch (err) {
-      if (err instanceof Error) {
-        next(err);
-      }
-    }
-  },
-);
+router.get('/users', getUsersController);
+router.get('/users/:id', getUserByIdController);
 
 export default router;

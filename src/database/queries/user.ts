@@ -2,6 +2,16 @@ import db from '../db';
 import { User } from '../../types';
 import { hashPassword } from '../../utils/password';
 
+export const getAllUsers = async (): Promise<User[]> => {
+  return await db<User>('users').select(
+    'id',
+    'username',
+    'email',
+    'created_at',
+    'updated_at',
+  );
+};
+
 export const getUserByEmail = async (
   email: string,
 ): Promise<User | undefined> => {
