@@ -5,10 +5,10 @@ import { verifyToken } from '../utils/tokens';
 
 const authMiddleware = async (
   req: Request,
-  res: Response,
+  _: Response,
   next: NextFunction,
 ) => {
-  const accessToken = req.cookies[TOKEN_NAME] as string;
+  const accessToken = req.cookies[TOKEN_NAME];
 
   if (!accessToken) {
     return next();
@@ -29,7 +29,7 @@ const authMiddleware = async (
 
     const { password: _, ...userWithoutPassword } = user;
 
-    res.locals.user = userWithoutPassword;
+    req.user = userWithoutPassword;
   } catch {
     return next();
   }

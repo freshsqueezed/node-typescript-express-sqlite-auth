@@ -78,11 +78,13 @@ export const registerController = async (
   }
 };
 
-export const logoutController = (_: Request, res: Response) => {
+export const logoutController = (req: Request, res: Response) => {
   res.cookie(TOKEN_NAME, '', {
     maxAge: -1,
     path: '/',
   });
+
+  req.user = null;
 
   return {
     status: 'success',
@@ -91,14 +93,14 @@ export const logoutController = (_: Request, res: Response) => {
 };
 
 export const meController = async (
-  _: Request,
+  req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
     res.status(200).json({
       status: 'success',
-      user: res.locals.user ?? null,
+      user: req.user ?? null,
     });
   } catch (err) {
     if (err instanceof Error) {
