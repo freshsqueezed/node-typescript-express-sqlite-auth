@@ -6,7 +6,7 @@ export async function up(knex: Knex): Promise<void> {
     table.text('username').unique().notNullable();
     table.text('email').unique().notNullable();
     table.text('password').notNullable();
-    table.json('roles').defaultTo(['USER']);
+    table.enu('role', ['ADMIN', 'USER']).defaultTo('USER');
     table.timestamps(true, true);
   });
 }

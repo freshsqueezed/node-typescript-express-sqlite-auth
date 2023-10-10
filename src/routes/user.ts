@@ -10,8 +10,8 @@ import { ensureAuthenticated } from '../utils/auth';
 
 const router = Router();
 
-router.get('/users', ensureAuthenticated(['admin']), getUsersController);
-router.get('/users/:id', ensureAuthenticated(['admin']), getUserByIdController);
+router.get('/users', ensureAuthenticated(['ADMIN']), getUsersController);
+router.get('/users/:id', ensureAuthenticated(['ADMIN']), getUserByIdController);
 router.post('/users', ensureAuthenticated, newUserController);
 router.put('/users/:id', ensureAuthenticated, updateUserController);
 router.delete('/users/:id', ensureAuthenticated, deleteUserController);
