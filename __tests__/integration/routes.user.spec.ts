@@ -27,6 +27,7 @@ describe('User routes', () => {
         id: 1,
         username: 'mateogordo',
         email: 'gordo@email.com',
+        role: 'USER',
         created_at: expect.any(String),
         updated_at: expect.any(String),
       });
@@ -45,6 +46,7 @@ describe('User routes', () => {
         id: 1,
         username: 'mateogordo',
         email: 'gordo@email.com',
+        role: 'USER',
         created_at: expect.any(String),
         updated_at: expect.any(String),
       });
@@ -67,6 +69,7 @@ describe('User routes', () => {
         id: 2,
         username: 'newUser',
         email: 'new@email.com',
+        role: 'USER',
         created_at: expect.any(String),
         updated_at: expect.any(String),
       });
@@ -87,6 +90,7 @@ describe('User routes', () => {
         id: 1,
         username: 'updatedUser',
         email: 'gordo@email.com',
+        role: 'USER',
         created_at: expect.any(String),
         updated_at: expect.any(String),
       });

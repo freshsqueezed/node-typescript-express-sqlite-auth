@@ -48,6 +48,7 @@ describe('Auth Routes', () => {
           id: 1,
           username: 'mateogordo',
           email: 'gordo@email.com',
+          role: 'USER',
           created_at: expect.any(String),
           updated_at: expect.any(String),
         },
@@ -55,7 +56,7 @@ describe('Auth Routes', () => {
     });
   });
 
-  describe('POST /auth/register', () => {
+  describe.only('POST /auth/register', () => {
     it('should throw an error if missing properties', async () => {
       try {
         await request(app).post('/auth/register').send({
@@ -88,6 +89,7 @@ describe('Auth Routes', () => {
           id: 2,
           username: 'newUser',
           email: 'new@email.com',
+          role: 'USER',
           created_at: expect.any(String),
           updated_at: expect.any(String),
         },
@@ -121,6 +123,7 @@ describe('Auth Routes', () => {
           id: 1,
           username: 'mateogordo',
           email: 'gordo@email.com',
+          role: 'USER',
           created_at: expect.any(String),
           updated_at: expect.any(String),
         },
