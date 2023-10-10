@@ -56,7 +56,7 @@ export const registerController = async (
       throw new Error('User already exists.');
     }
 
-    const user = await createUser(email, username, password);
+    const user = await createUser({ email, username, password });
     if (!user) {
       throw new Error('Error creating user.');
     }
