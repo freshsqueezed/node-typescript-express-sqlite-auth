@@ -21,7 +21,15 @@ const authMiddleware = async (
       return next();
     }
 
-    res.locals.user = await getUserById(data.sub);
+    const user = await getUserById(data.sub);
+
+    if (!user) {
+      return next();
+    }
+
+    const { password: _, ...userWithoutPassword } = user;
+
+    res.locals.user = userWithoutPassword;
   } catch {
     return next();
   }

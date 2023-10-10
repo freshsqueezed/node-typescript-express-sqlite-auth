@@ -3,6 +3,7 @@ import app from '../../src/app';
 import db from '../../src/database/db';
 import { createTokenFromUser } from '../../src/utils/tokens';
 import { Role } from '../../src/types';
+import { TOKEN_NAME } from '../../src/config';
 
 describe('Auth Routes', () => {
   beforeEach(async () => {
@@ -41,10 +42,8 @@ describe('Auth Routes', () => {
       expect(response.type).toBe('application/json');
       expect(response.body).toHaveProperty('status');
       expect(response.body).toHaveProperty('user');
-      expect(response.body).toHaveProperty('token');
       expect(response.body).toEqual({
         status: 'success',
-        token: expect.any(String),
         user: {
           id: 1,
           username: 'mateogordo',
@@ -82,10 +81,8 @@ describe('Auth Routes', () => {
       expect(response.type).toBe('application/json');
       expect(response.body).toHaveProperty('status');
       expect(response.body).toHaveProperty('user');
-      expect(response.body).toHaveProperty('token');
       expect(response.body).toEqual({
         status: 'success',
-        token: expect.any(String),
         user: {
           id: 2,
           username: 'newUser',
@@ -111,9 +108,7 @@ describe('Auth Routes', () => {
 
       const response = await request(app)
         .get('/auth/me')
-        .set({
-          'x-access-token': `Bearer ${token}`,
-        });
+        .set('Cookie', `${TOKEN_NAME}=${token}`);
 
       expect(response.status).toBe(200);
       expect(response.type).toBe('application/json');

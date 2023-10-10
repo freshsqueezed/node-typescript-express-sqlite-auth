@@ -3,6 +3,7 @@ import app from '../../src/app';
 import db from '../../src/database/db';
 import { createTokenFromUser } from '../../src/utils/tokens';
 import { Role } from '../../src/types';
+import { TOKEN_NAME } from '../../src/config';
 
 describe('User routes', () => {
   let adminToken: string;
@@ -32,9 +33,7 @@ describe('User routes', () => {
     it('returns all users', async () => {
       const response = await request(app)
         .get('/users')
-        .set({
-          'x-access-token': `Bearer ${adminToken}`,
-        });
+        .set('Cookie', `${TOKEN_NAME}=${adminToken}`);
 
       expect(response.status).toBe(200);
       expect(response.type).toBe('application/json');
@@ -56,9 +55,7 @@ describe('User routes', () => {
     it('returns a single user by id', async () => {
       const response = await request(app)
         .get('/users/1')
-        .set({
-          'x-access-token': `Bearer ${adminToken}`,
-        });
+        .set('Cookie', `${TOKEN_NAME}=${adminToken}`);
 
       expect(response.status).toBe(200);
       expect(response.type).toBe('application/json');
@@ -84,9 +81,7 @@ describe('User routes', () => {
           email: 'new@email.com',
           password: 'password123',
         })
-        .set({
-          'x-access-token': `Bearer ${adminToken}`,
-        });
+        .set('Cookie', `${TOKEN_NAME}=${adminToken}`);
 
       expect(response.status).toBe(200);
       expect(response.type).toBe('application/json');
@@ -110,9 +105,7 @@ describe('User routes', () => {
         .send({
           username: 'updatedUser',
         })
-        .set({
-          'x-access-token': `Bearer ${adminToken}`,
-        });
+        .set('Cookie', `${TOKEN_NAME}=${adminToken}`);
 
       expect(response.status).toBe(200);
       expect(response.type).toBe('application/json');
@@ -133,9 +126,7 @@ describe('User routes', () => {
     it('deletes a user by id', async () => {
       const response = await request(app)
         .del('/users/1')
-        .set({
-          'x-access-token': `Bearer ${adminToken}`,
-        });
+        .set('Cookie', `${TOKEN_NAME}=${adminToken}`);
 
       expect(response.status).toBe(200);
       expect(response.type).toBe('application/json');
