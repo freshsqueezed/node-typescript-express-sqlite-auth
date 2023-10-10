@@ -141,9 +141,7 @@ describe('User routes', () => {
       expect(response.type).toBe('application/json');
       expect(response.body).toHaveProperty('status');
       expect(response.body).toHaveProperty('data');
-      expect(response.body.data).toStrictEqual(
-        'User with id 1 successfully deleted.',
-      );
+      expect(response.body.data).toStrictEqual('User successfully deleted.');
     });
   });
 });

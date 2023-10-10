@@ -95,7 +95,7 @@ export const deleteUserController = async (
 
     res.status(200).send({
       status: 'success',
-      data: `User with id ${1} successfully deleted.`,
+      data: `User successfully deleted.`,
     });
   } catch (err) {
     if (err instanceof Error) {
