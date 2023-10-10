@@ -9,8 +9,12 @@ import userRoutes from './routes/user';
 const app = express();
 
 // middleware
+app.use(
+  cors({
+    credentials: true,
+  }),
+);
 app.use(json());
-app.use(cors());
 app.use(cookieParser());
 
 // custom middleware
