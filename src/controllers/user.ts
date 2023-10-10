@@ -32,9 +32,9 @@ export const getUserByIdController = async (
   next: NextFunction,
 ) => {
   try {
-    const { password: _, ...userWithoutPassword } = await getUserById(
-      req.params.id,
-    );
+    const user = await getUserById(req.params.id);
+
+    const { password: _, ...userWithoutPassword } = user;
 
     res.status(200).send({
       status: 'success',
@@ -53,11 +53,7 @@ export const newUserController = async (
   next: NextFunction,
 ) => {
   try {
-    const user = await createUser(
-      req.body.email,
-      req.body.username,
-      req.body.password,
-    );
+    const user = await createUser(req.body);
 
     res.status(200).send({
       status: 'success',

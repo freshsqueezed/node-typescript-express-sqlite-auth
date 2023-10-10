@@ -39,16 +39,12 @@ export const getUserById = async (id: string): Promise<User> => {
   return user;
 };
 
-export async function createUser(
-  email: string,
-  username: string,
-  password: string,
-): Promise<User> {
+export async function createUser(newUser: Partial<User>): Promise<User> {
   const [user] = await db<User>('users')
     .insert({
-      email,
-      username,
-      password: await hashPassword(password),
+      email: newUser.email,
+      username: newUser.username,
+      password: await hashPassword(newUser.password!),
     })
     .returning(['id', 'username', 'email', 'role', 'created_at', 'updated_at']);
 
