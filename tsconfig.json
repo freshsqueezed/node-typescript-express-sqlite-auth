@@ -9,6 +9,6 @@
     "outDir": "dist",
     "rootDirs": ["src", "__tests__"]
   },
-  "include": ["src", "types"],
+  "include": ["src"],
   "exclude": ["__tests__"]
 }

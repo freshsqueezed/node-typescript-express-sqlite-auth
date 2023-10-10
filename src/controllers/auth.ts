@@ -84,12 +84,10 @@ export const logoutController = (req: Request, res: Response) => {
     path: '/',
   });
 
-  req.user = null;
-
-  return {
+  res.status(200).send({
     status: 'success',
     redirect: '/logout',
-  };
+  });
 };
 
 export const meController = async (

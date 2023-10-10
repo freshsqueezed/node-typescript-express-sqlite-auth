@@ -19,7 +19,7 @@ const authMiddleware = async (
       const user = await getUserById(data.sub);
 
       if (user) {
-        req.user = { ...user, password: null };
+        req.user = { ...user, password: undefined };
       }
     }
   } catch {
