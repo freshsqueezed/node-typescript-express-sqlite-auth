@@ -7,6 +7,7 @@ export const getAllUsers = async (): Promise<User[]> => {
     'id',
     'username',
     'email',
+    'roles',
     'created_at',
     'updated_at',
   );
@@ -51,7 +52,14 @@ export async function createUser(
       username,
       password: await hashPassword(password),
     })
-    .returning(['id', 'username', 'email', 'created_at', 'updated_at']);
+    .returning([
+      'id',
+      'username',
+      'email',
+      'roles',
+      'created_at',
+      'updated_at',
+    ]);
 
   if (!user) {
     throw new Error('Error creating user.');
@@ -69,7 +77,14 @@ export async function updateUser(
     .update({
       ...user,
     })
-    .returning(['id', 'username', 'email', 'created_at', 'updated_at']);
+    .returning([
+      'id',
+      'username',
+      'email',
+      'roles',
+      'created_at',
+      'updated_at',
+    ]);
 
   if (!updateUser) {
     throw new Error('Error creating user.');

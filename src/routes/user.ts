@@ -6,13 +6,14 @@ import {
   newUserController,
   updateUserController,
 } from '../controllers/user';
+import { ensureAuthenticated } from '../utils/auth';
 
 const router = Router();
 
-router.get('/users', getUsersController);
-router.get('/users/:id', getUserByIdController);
-router.post('/users', newUserController);
-router.put('/users/:id', updateUserController);
-router.delete('/users/:id', deleteUserController);
+router.get('/users', ensureAuthenticated(['admin']), getUsersController);
+router.get('/users/:id', ensureAuthenticated(['admin']), getUserByIdController);
+router.post('/users', ensureAuthenticated, newUserController);
+router.put('/users/:id', ensureAuthenticated, updateUserController);
+router.delete('/users/:id', ensureAuthenticated, deleteUserController);
 
 export default router;
