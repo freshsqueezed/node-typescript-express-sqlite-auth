@@ -5,10 +5,22 @@ import { createTokenFromUser } from '../../src/utils/tokens';
 import { Role } from '../../src/types';
 
 describe('User routes', () => {
+  let adminToken: string;
+
   beforeEach(async () => {
     await db.migrate.rollback();
     await db.migrate.latest();
     await db.seed.run();
+
+    adminToken = await createTokenFromUser(
+      {
+        id: 1,
+        username: 'mateogordo',
+        email: 'gordo@email.com',
+        role: Role.ADMIN,
+      },
+      '5m',
+    );
   });
 
   afterAll(async () => {
@@ -18,20 +30,10 @@ describe('User routes', () => {
 
   describe('GET /users', () => {
     it('returns all users', async () => {
-      const token = await createTokenFromUser(
-        {
-          id: 1,
-          username: 'mateogordo',
-          email: 'gordo@email.com',
-          role: Role.ADMIN,
-        },
-        '1hr',
-      );
-
       const response = await request(app)
         .get('/users')
         .set({
-          'x-access-token': `Bearer ${token}`,
+          'x-access-token': `Bearer ${adminToken}`,
         });
 
       expect(response.status).toBe(200);
@@ -43,7 +45,7 @@ describe('User routes', () => {
         id: 1,
         username: 'mateogordo',
         email: 'gordo@email.com',
-        role: 'USER',
+        role: Role.USER,
         created_at: expect.any(String),
         updated_at: expect.any(String),
       });
@@ -52,20 +54,10 @@ describe('User routes', () => {
 
   describe('GET /users/:id', () => {
     it('returns a single user by id', async () => {
-      const token = await createTokenFromUser(
-        {
-          id: 1,
-          username: 'mateogordo',
-          email: 'gordo@email.com',
-          role: Role.ADMIN,
-        },
-        '1hr',
-      );
-
       const response = await request(app)
         .get('/users/1')
         .set({
-          'x-access-token': `Bearer ${token}`,
+          'x-access-token': `Bearer ${adminToken}`,
         });
 
       expect(response.status).toBe(200);
@@ -76,7 +68,7 @@ describe('User routes', () => {
         id: 1,
         username: 'mateogordo',
         email: 'gordo@email.com',
-        role: 'USER',
+        role: Role.USER,
         created_at: expect.any(String),
         updated_at: expect.any(String),
       });
@@ -85,16 +77,6 @@ describe('User routes', () => {
 
   describe('POST /users', () => {
     it('creates a new user', async () => {
-      const token = await createTokenFromUser(
-        {
-          id: 1,
-          username: 'mateogordo',
-          email: 'gordo@email.com',
-          role: Role.ADMIN,
-        },
-        '1hr',
-      );
-
       const response = await request(app)
         .post('/users')
         .send({
@@ -103,7 +85,7 @@ describe('User routes', () => {
           password: 'password123',
         })
         .set({
-          'x-access-token': `Bearer ${token}`,
+          'x-access-token': `Bearer ${adminToken}`,
         });
 
       expect(response.status).toBe(200);
@@ -114,7 +96,7 @@ describe('User routes', () => {
         id: 2,
         username: 'newUser',
         email: 'new@email.com',
-        role: 'USER',
+        role: Role.USER,
         created_at: expect.any(String),
         updated_at: expect.any(String),
       });
@@ -123,23 +105,13 @@ describe('User routes', () => {
 
   describe('PUT /users/:id', () => {
     it('updates a user by id', async () => {
-      const token = await createTokenFromUser(
-        {
-          id: 1,
-          username: 'mateogordo',
-          email: 'gordo@email.com',
-          role: Role.ADMIN,
-        },
-        '1hr',
-      );
-
       const response = await request(app)
         .put('/users/1')
         .send({
           username: 'updatedUser',
         })
         .set({
-          'x-access-token': `Bearer ${token}`,
+          'x-access-token': `Bearer ${adminToken}`,
         });
 
       expect(response.status).toBe(200);
@@ -150,7 +122,7 @@ describe('User routes', () => {
         id: 1,
         username: 'updatedUser',
         email: 'gordo@email.com',
-        role: 'USER',
+        role: Role.USER,
         created_at: expect.any(String),
         updated_at: expect.any(String),
       });
@@ -159,20 +131,10 @@ describe('User routes', () => {
 
   describe('DELETE /users/:id', () => {
     it('deletes a user by id', async () => {
-      const token = await createTokenFromUser(
-        {
-          id: 1,
-          username: 'mateogordo',
-          email: 'gordo@email.com',
-          role: Role.ADMIN,
-        },
-        '1hr',
-      );
-
       const response = await request(app)
         .del('/users/1')
         .set({
-          'x-access-token': `Bearer ${token}`,
+          'x-access-token': `Bearer ${adminToken}`,
         });
 
       expect(response.status).toBe(200);
