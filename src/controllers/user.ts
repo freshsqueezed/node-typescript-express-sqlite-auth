@@ -91,7 +91,7 @@ export const deleteUserController = async (
   next: NextFunction,
 ) => {
   try {
-    const user = await deleteUser(req.params.id);
+    await deleteUser(req.params.id);
 
     res.status(200).send({
       status: 'success',

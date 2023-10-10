@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { validatePassword } from '../utils/password';
 import { createTokenFromUser } from '../utils/tokens';
 import { createUser, getUserByEmail } from '../database/queries/user';
+import { TOKEN_NAME } from '../config';
 
 export const loginController = async (
   req: Request,
@@ -28,10 +29,10 @@ export const loginController = async (
 
     const token = await createTokenFromUser(user, '1hr');
 
+    res.cookie(TOKEN_NAME, token);
     res.status(200).json({
       status: 'success',
       user: userWithoutPassword,
-      token,
     });
   } catch (err) {
     if (err instanceof Error) {
@@ -65,16 +66,28 @@ export const registerController = async (
 
     const token = await createTokenFromUser(user, '1hr');
 
+    res.cookie(TOKEN_NAME, token);
     res.status(200).json({
       status: 'success',
       user: userWithoutPassword,
-      token,
     });
   } catch (err) {
     if (err instanceof Error) {
       next(err);
     }
   }
+};
+
+export const logoutController = (_: Request, res: Response) => {
+  res.cookie(TOKEN_NAME, '', {
+    maxAge: -1,
+    path: '/',
+  });
+
+  return {
+    status: 'success',
+    redirect: '/logout',
+  };
 };
 
 export const meController = async (

@@ -1,40 +1,32 @@
-import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../utils/tokens';
+import { NextFunction, Request, Response } from 'express';
+import { TOKEN_NAME } from '../config';
 import { getUserById } from '../database/queries/user';
+import { verifyToken } from '../utils/tokens';
 
-export const authMiddleware = async (
+const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const authToken = req.header('x-access-token');
+  const accessToken = req.cookies[TOKEN_NAME] as string;
 
-  if (!authToken) {
-    return next();
-  }
-
-  const [bearer, token] = authToken.split(' ');
-  if (bearer.toLowerCase() !== 'bearer' || !token) {
+  if (!accessToken) {
     return next();
   }
 
   try {
-    const data = await verifyToken(token);
+    const data = await verifyToken(accessToken);
+
     if (!data.sub) {
       return next();
     }
 
-    const user = await getUserById(data.sub);
-    if (!user) {
-      return next();
-    }
-
-    const { password: _, ...userWithoutPassword } = user;
-
-    res.locals.user = userWithoutPassword;
-  } catch (err) {
+    res.locals.user = await getUserById(data.sub);
+  } catch {
     return next();
   }
 
   return next();
 };
+
+export default authMiddleware;
