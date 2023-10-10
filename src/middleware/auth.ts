@@ -10,31 +10,22 @@ const authMiddleware = async (
 ) => {
   const accessToken = req.cookies[TOKEN_NAME];
 
-  if (!accessToken) {
-    return next();
-  }
+  if (!accessToken) return next();
 
   try {
     const data = await verifyToken(accessToken);
 
-    if (!data.sub) {
-      return next();
+    if (data.sub) {
+      const user = await getUserById(data.sub);
+      if (user) {
+        req.user = { ...user, password: undefined };
+      }
     }
-
-    const user = await getUserById(data.sub);
-
-    if (!user) {
-      return next();
-    }
-
-    const { password: _, ...userWithoutPassword } = user;
-
-    req.user = userWithoutPassword;
   } catch {
     return next();
   }
 
-  return next();
+  next();
 };
 
 export default authMiddleware;
