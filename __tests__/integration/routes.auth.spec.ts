@@ -2,6 +2,7 @@ import request from 'supertest';
 import app from '../../src/app';
 import db from '../../src/database/db';
 import { createTokenFromUser } from '../../src/utils/tokens';
+import { Role } from '../../src/types';
 
 describe('Auth Routes', () => {
   beforeEach(async () => {
@@ -56,7 +57,7 @@ describe('Auth Routes', () => {
     });
   });
 
-  describe.only('POST /auth/register', () => {
+  describe('POST /auth/register', () => {
     it('should throw an error if missing properties', async () => {
       try {
         await request(app).post('/auth/register').send({
@@ -89,7 +90,7 @@ describe('Auth Routes', () => {
           id: 2,
           username: 'newUser',
           email: 'new@email.com',
-          role: 'USER',
+          role: Role.USER,
           created_at: expect.any(String),
           updated_at: expect.any(String),
         },

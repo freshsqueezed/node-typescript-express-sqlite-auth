@@ -19,12 +19,10 @@ export const getAllUsers = async (): Promise<User[]> => {
   return users;
 };
 
-export const getUserByEmail = async (email: string): Promise<User> => {
+export const getUserByEmail = async (
+  email: string,
+): Promise<User | undefined> => {
   const user = await db<User>('users').first().where({ email });
-
-  if (!user) {
-    throw new Error('User does not exist.');
-  }
 
   return user;
 };

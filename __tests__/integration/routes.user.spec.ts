@@ -1,6 +1,8 @@
 import request from 'supertest';
 import app from '../../src/app';
 import db from '../../src/database/db';
+import { createTokenFromUser } from '../../src/utils/tokens';
+import { Role } from '../../src/types';
 
 describe('User routes', () => {
   beforeEach(async () => {
@@ -16,7 +18,21 @@ describe('User routes', () => {
 
   describe('GET /users', () => {
     it('returns all users', async () => {
-      const response = await request(app).get('/users');
+      const token = await createTokenFromUser(
+        {
+          id: 1,
+          username: 'mateogordo',
+          email: 'gordo@email.com',
+          role: Role.ADMIN,
+        },
+        '1hr',
+      );
+
+      const response = await request(app)
+        .get('/users')
+        .set({
+          'x-access-token': `Bearer ${token}`,
+        });
 
       expect(response.status).toBe(200);
       expect(response.type).toBe('application/json');
@@ -36,7 +52,21 @@ describe('User routes', () => {
 
   describe('GET /users/:id', () => {
     it('returns a single user by id', async () => {
-      const response = await request(app).get('/users/1');
+      const token = await createTokenFromUser(
+        {
+          id: 1,
+          username: 'mateogordo',
+          email: 'gordo@email.com',
+          role: Role.ADMIN,
+        },
+        '1hr',
+      );
+
+      const response = await request(app)
+        .get('/users/1')
+        .set({
+          'x-access-token': `Bearer ${token}`,
+        });
 
       expect(response.status).toBe(200);
       expect(response.type).toBe('application/json');
@@ -55,11 +85,26 @@ describe('User routes', () => {
 
   describe('POST /users', () => {
     it('creates a new user', async () => {
-      const response = await request(app).post('/users').send({
-        username: 'newUser',
-        email: 'new@email.com',
-        password: 'password123',
-      });
+      const token = await createTokenFromUser(
+        {
+          id: 1,
+          username: 'mateogordo',
+          email: 'gordo@email.com',
+          role: Role.ADMIN,
+        },
+        '1hr',
+      );
+
+      const response = await request(app)
+        .post('/users')
+        .send({
+          username: 'newUser',
+          email: 'new@email.com',
+          password: 'password123',
+        })
+        .set({
+          'x-access-token': `Bearer ${token}`,
+        });
 
       expect(response.status).toBe(200);
       expect(response.type).toBe('application/json');
@@ -78,9 +123,24 @@ describe('User routes', () => {
 
   describe('PUT /users/:id', () => {
     it('updates a user by id', async () => {
-      const response = await request(app).put('/users/1').send({
-        username: 'updatedUser',
-      });
+      const token = await createTokenFromUser(
+        {
+          id: 1,
+          username: 'mateogordo',
+          email: 'gordo@email.com',
+          role: Role.ADMIN,
+        },
+        '1hr',
+      );
+
+      const response = await request(app)
+        .put('/users/1')
+        .send({
+          username: 'updatedUser',
+        })
+        .set({
+          'x-access-token': `Bearer ${token}`,
+        });
 
       expect(response.status).toBe(200);
       expect(response.type).toBe('application/json');
@@ -99,7 +159,21 @@ describe('User routes', () => {
 
   describe('DELETE /users/:id', () => {
     it('deletes a user by id', async () => {
-      const response = await request(app).del('/users/1');
+      const token = await createTokenFromUser(
+        {
+          id: 1,
+          username: 'mateogordo',
+          email: 'gordo@email.com',
+          role: Role.ADMIN,
+        },
+        '1hr',
+      );
+
+      const response = await request(app)
+        .del('/users/1')
+        .set({
+          'x-access-token': `Bearer ${token}`,
+        });
 
       expect(response.status).toBe(200);
       expect(response.type).toBe('application/json');
