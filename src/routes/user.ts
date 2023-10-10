@@ -16,21 +16,25 @@ router.get(
   ensureAuthenticated([Role.ADMIN, Role.USER]),
   getUsersController,
 );
+
 router.get(
   '/users/:id',
   ensureAuthenticated([Role.ADMIN, Role.USER]),
   getUserByIdController,
 );
+
 router.post(
   '/users',
   ensureAuthenticated([Role.ADMIN, Role.USER]),
   newUserController,
 );
+
 router.put(
   '/users/:id',
   ensureAuthenticated([Role.ADMIN, Role.USER]),
   updateUserController,
 );
+
 router.delete(
   '/users/:id',
   ensureAuthenticated([Role.ADMIN, Role.USER]),
