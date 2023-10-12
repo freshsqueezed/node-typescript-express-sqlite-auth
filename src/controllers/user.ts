@@ -15,6 +15,10 @@ export const getUsersController = async (
   try {
     const users = await getAllUsers();
 
+    if (!users?.length) {
+      throw new Error('No users exist.');
+    }
+
     res.status(200).send({
       status: 'success',
       data: users,
@@ -33,6 +37,10 @@ export const getUserByIdController = async (
 ) => {
   try {
     const user = await getUserById(req.params.id);
+
+    if (!user) {
+      throw new Error('User does not exist.');
+    }
 
     const { password: _, ...userWithoutPassword } = user;
 
@@ -55,6 +63,10 @@ export const newUserController = async (
   try {
     const user = await createUser(req.body);
 
+    if (!user) {
+      throw new Error('Error creating user.');
+    }
+
     res.status(200).send({
       status: 'success',
       data: user,
@@ -74,6 +86,10 @@ export const updateUserController = async (
   try {
     const user = await updateUser(req.params.id, req.body);
 
+    if (!user) {
+      throw new Error('Error updating user.');
+    }
+
     res.status(200).send({
       status: 'success',
       data: user,
@@ -91,7 +107,11 @@ export const deleteUserController = async (
   next: NextFunction,
 ) => {
   try {
-    await deleteUser(req.params.id);
+    const user = await deleteUser(req.params.id);
+
+    if (!user) {
+      throw new Error('Error deleting user.');
+    }
 
     res.status(200).send({
       status: 'success',

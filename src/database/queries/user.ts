@@ -2,7 +2,16 @@ import db from '../db';
 import { User } from '../../types';
 import { hashPassword } from '../../utils/password';
 
-export const getAllUsers = async (): Promise<User[]> => {
+const publicFields = [
+  'id',
+  'username',
+  'email',
+  'role',
+  'created_at',
+  'updated_at',
+];
+
+export const getAllUsers = async (): Promise<User[] | undefined> => {
   const users = await db<User>('users').select(
     'id',
     'username',
@@ -11,10 +20,6 @@ export const getAllUsers = async (): Promise<User[]> => {
     'created_at',
     'updated_at',
   );
-
-  if (!users.length) {
-    throw new Error('No users exist.');
-  }
 
   return users;
 };
@@ -27,14 +32,10 @@ export const getUserByEmail = async (
   return user;
 };
 
-export const getUserById = async (id: string): Promise<User> => {
+export const getUserById = async (id: string): Promise<User | undefined> => {
   const user = await db<User>('users')
     .first()
     .where({ id: parseInt(id) });
-
-  if (!user) {
-    throw new Error('User does not exist.');
-  }
 
   return user;
 };
@@ -47,10 +48,6 @@ export async function createUser(newUser: Partial<User>): Promise<User> {
       password: await hashPassword(newUser.password!),
     })
     .returning(['id', 'username', 'email', 'role', 'created_at', 'updated_at']);
-
-  if (!user) {
-    throw new Error('Error creating user.');
-  }
 
   return user;
 }
@@ -65,10 +62,6 @@ export async function updateUser(
       ...user,
     })
     .returning(['id', 'username', 'email', 'role', 'created_at', 'updated_at']);
-
-  if (!updateUser) {
-    throw new Error('Error creating user.');
-  }
 
   return updatedUser;
 }
