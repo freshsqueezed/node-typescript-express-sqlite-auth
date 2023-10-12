@@ -2,15 +2,6 @@ import db from '../db';
 import { User } from '../../types';
 import { hashPassword } from '../../utils/password';
 
-const publicFields = [
-  'id',
-  'username',
-  'email',
-  'role',
-  'created_at',
-  'updated_at',
-];
-
 export const getAllUsers = async (): Promise<User[] | undefined> => {
   const users = await db<User>('users').select(
     'id',
